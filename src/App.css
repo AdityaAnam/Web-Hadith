@@ -1,0 +1,33 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.App{
+  overflow-x: scroll;
+}
+.tablecell{
+  width: 300px;
+  word-wrap: break-word;
+  margin-bottom: 50px;
+}
+.tabledatacell{
+  border: 1px solid black;
+  max-height: 100px;
+  height: 100px;
+}
+.table{
+  overflow: scroll;
+}
+.tablerow{
+  margin-bottom: 10px;
+  border-top: 2px solid rgb(130, 130, 130);
+}
+
+.idcell{
+  width: 80px;
+  text-align: center;
+}
+.tagcell{
+  font-size: 2.2vh;
+}
