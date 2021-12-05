@@ -6,28 +6,63 @@
 .App{
   overflow-x: scroll;
 }
+.searchbar{
+  text-align: center;
+}
+.searchResult{
+  width: 50%;
+  margin: 0 auto;
+}
+.searchResult > div{
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
 .tablecell{
-  width: 300px;
+  width: 250px;
   word-wrap: break-word;
-  margin-bottom: 50px;
 }
 .tabledatacell{
   border: 1px solid black;
-  max-height: 100px;
-  height: 100px;
+  height: 200px;
+}
+th{
+  border-right: 1px solid black;
+  border-top: 1px solid black;
 }
 .table{
   overflow: scroll;
 }
-.tablerow{
-  margin-bottom: 10px;
-  border-top: 2px solid rgb(130, 130, 130);
-}
 
+
+.tagcell{
+  overflow-y: hidden;
+}
 .idcell{
   width: 80px;
   text-align: center;
+  overflow-y: hidden;
 }
 .tagcell{
   font-size: 2.2vh;
+}
+td{
+  display: block;
+  overflow-y: scroll;
+  border: 1px solid black;
+}
+tr{
+  display: flex;
+}
+.chaincircle{
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.chaincell{
+  text-align: center;
 }
