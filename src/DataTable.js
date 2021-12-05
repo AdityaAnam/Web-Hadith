@@ -8,28 +8,41 @@ const columns = [
   "Arabic without Tashkel",
   "Translation",
   "Chain",
-
 ];
 
 export default function DataTable() {
   const [searchstring, setSearchString] = React.useState("");
+  const [bookstring, setBookString] = React.useState("");
+  const [hadithstring, setHadithString] = React.useState("");
   const [leftLimit, setLeftLimit] = React.useState(0);
   const [rowList, setRowList] = React.useState([]);
   const [searchedScholar, setScholar] = React.useState(null);
-  
+
+  const tagToBookHadih = (tag) => {
+    const numArray = tag.match(/\d+/g);
+    // console.log(numArray);
+    return numArray;
+  }
   const rows = [];
   articles.map((row, index) => {
-    const chainArray = row.chain.split('->');
-    rows.push({ ...row, id: index + 1,chain: chainArray });
+    const chainArray = row.chain.split("->");
+    const BookHadih = tagToBookHadih(row.tag);
+    rows.push({ ...row, id: index + 1, chain: chainArray,book: BookHadih[0],hadith: BookHadih[1] });
   });
   React.useEffect(() => {
-    const interestedrows = rows.slice(leftLimit,1000+leftLimit);
-    
+    const interestedrows = rows.slice(leftLimit, 1000 + leftLimit);
+
     console.log(interestedrows);
     setRowList(interestedrows);
   }, []);
   const searchStringHandler = (event) => {
     setSearchString(event.target.value);
+  };
+  const searchBookHandler = (event) => {
+    setBookString(event.target.value);
+  };
+  const searchHadithHandler = (event) => {
+    setHadithString(event.target.value);
   };
   const searchSubmitHandler = (event) => {
     event.preventDefault();
@@ -41,6 +54,24 @@ export default function DataTable() {
     );
     console.log(newRowList);
     setScholar(foundScholar);
+    setRowList(newRowList);
+  };
+  const searchSubmitHandler2 = (event) => {
+    event.preventDefault();
+    const newRowList = rowList.filter((row) =>
+      row.book == bookstring
+    );
+    
+    console.log(newRowList);
+    setRowList(newRowList);
+  };
+  const searchSubmitHandler3 = (event) => {
+    event.preventDefault();
+    const newRowList = rowList.filter((row) =>
+      row.hadith == hadithstring
+    );
+    
+    console.log(newRowList);
     setRowList(newRowList);
   };
   console.log(leftLimit);
@@ -55,6 +86,26 @@ export default function DataTable() {
           onChange={searchStringHandler}
         />
         <button onClick={searchSubmitHandler}> Search</button>
+      </form>
+      <form className="searchbar">
+        <label htmlFor="search">Search Book: </label>
+        <input
+          id="search"
+          type="text"
+          name="searchtext"
+          onChange={searchBookHandler}
+        />
+        <button onClick={searchSubmitHandler2}> Search</button>
+      </form>
+      <form className="searchbar">
+        <label htmlFor="search">Search Hadith: </label>
+        <input
+          id="search"
+          type="text"
+          name="searchtext"
+          onChange={searchHadithHandler}
+        />
+        <button onClick={searchSubmitHandler3}> Search</button>
       </form>
       {searchedScholar ? (
         <div className="searchResult">
@@ -109,7 +160,11 @@ export default function DataTable() {
           <thead>
             <tr className="tablerow">
               {columns.map((head) => (
-                <th className={`tablecell tableheadcell ${head == "ID" ? "idcell" : ""}`}>
+                <th
+                  className={`tablecell tableheadcell ${
+                    head == "ID" ? "idcell" : ""
+                  }`}
+                >
                   {head}
                 </th>
               ))}
@@ -126,12 +181,39 @@ export default function DataTable() {
                     {row.arabic_no_dash}
                   </td>
                   <td className="tablecell tabledatacell">{row.translation}</td>
-                  <td className="tablecell tabledatacell chaincell">{
-                    row.chain.map((scholarid,index)=>{
-                      if(index+1<row.chain.length) return <><div className="chaincircle" style={{textAlign: "center"}}>{scholarid}</div><div style={{textAlign: "center"}}>{"|"}</div><div style={{textAlign: "center"}}>{"\\/"}</div></>
-                      return <div className="chaincircle" style={{textAlign: "center"}}>{scholarid}</div>
-                    })
-                  }</td>
+                  <td className="tablecell tabledatacell chaincell">
+                    {row.chain.map((scholarid, index) => {
+                      if (index + 1 < row.chain.length)
+                        return (
+                          <>
+                            <div
+                              className="chaincircle"
+                              style={{ textAlign: "center" }}
+                              onClick={(e) => {
+                                setSearchString(scholarid);
+                                searchSubmitHandler(e);
+                              }}
+                            >
+                              {scholarid}
+                            </div>
+                            <div style={{ textAlign: "center" }}>{"|"}</div>
+                            <div style={{ textAlign: "center" }}>{"\\/"}</div>
+                          </>
+                        );
+                      return (
+                        <div
+                          className="chaincircle"
+                          style={{ textAlign: "center" }}
+                          onClick={(e) => {
+                            setSearchString(scholarid);
+                            searchSubmitHandler(e);
+                          }}
+                        >
+                          {scholarid}
+                        </div>
+                      );
+                    })}
+                  </td>
                 </tr>
               );
             })}
